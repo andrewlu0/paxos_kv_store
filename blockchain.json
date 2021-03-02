@@ -1,0 +1,20 @@
+[
+    {
+        "operation": [
+            "get",
+            "key1",
+            ""
+        ],
+        "nonce": "nonce1",
+        "hash": "hash1"
+    },
+    {
+        "operation": [
+            "put",
+            "key2",
+            "val2"
+        ],
+        "nonce": "nonce2",
+        "hash": "hash2"
+    }
+]
