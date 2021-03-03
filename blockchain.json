@@ -1,20 +1,17 @@
-[
-    {
-        "operation": [
-            "get",
-            "key1",
-            ""
-        ],
-        "nonce": "nonce1",
-        "hash": "hash1"
-    },
-    {
-        "operation": [
-            "put",
-            "key2",
-            "val2"
-        ],
-        "nonce": "nonce2",
-        "hash": "hash2"
-    }
-]
+[{
+    "operation": [
+        "put",
+        "key1",
+        "val1"
+    ],
+    "nonce": "",
+    "hash": ""
+},{
+    "operation": [
+        "put",
+        "key2",
+        "val2"
+    ],
+    "nonce": "",
+    "hash": ""
+}]

@@ -8,15 +8,17 @@ import re
 import json
 
 from config import *
+from block import Block
+from blockchain import Blockchain
 
 server_sockets = []
 
 # stores all operations not added to blockchain yet
 queue = []
 # stores key values
-dictionary = {}
+kv_store = {}
 # blockchain contains dicts with operation, nonce, hash
-blockchain = []
+blockchain = Blockchain()
 
 
 def close_connections():
@@ -56,13 +58,22 @@ def handle_conn(conn):
 
 def writeToFile():
     with open("blockchain.json", "w") as f:
-        json.dump(blockchain, f, indent=4)
+        f.write("[")
+        for i in range(len(blockchain.chain)):
+            json.dump(blockchain.chain[i].to_dict(), f, indent=4)
+            if (i < len(blockchain.chain) - 1):
+                f.write(",")
+        f.write("]")
 
 
 def readFromFile():
     with open("blockchain.json", "r") as f:
-        blockchain = json.load(f)
-        print(blockchain)
+        blocklist = json.load(f)
+        print(blocklist)
+        for block in blocklist:
+            blockchain.append(Block(block["operation"], block["nonce"], block["hash"]))
+            if(block["operation"][0] == "put"):
+                kv_store[block["operation"][1]] = block["operation"][2]
 
 
 if __name__ == "__main__":
@@ -79,13 +90,15 @@ if __name__ == "__main__":
     server_socket.listen()
     input_thread = threading.Thread(target=handle_input)
     input_thread.start()
-    block1 = {"operation": ("get", "key1", ""), "nonce": "nonce1", "hash": "hash1"}
-    block2 = {"operation": ("put", "key2", "val2"), "nonce": "nonce2", "hash": "hash2"}
+    block1 = Block(("put", "key1", "val1"))
+    block2 = Block(("put", "key2", "val2"))
     blockchain.append(block1)
     blockchain.append(block2)
     writeToFile()
-    blockchain = []
+    blockchain.clear()
     readFromFile()
+    print(str(blockchain))
+    print(kv_store)
     while True:
         conn, addr = server_socket.accept()
         print(addr)
