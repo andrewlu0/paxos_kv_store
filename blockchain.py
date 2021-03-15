@@ -11,8 +11,13 @@ class Blockchain:
     def clear(self):
         self.chain = []
 
+    def last(self):
+        if not self.chain:
+            return None
+        return self.chain[-1]
+
     def __str__(self):
         block_str = []
         for block in self.chain:
-          block_str.append(block.to_dict())
+          block_str.append(str(block))
         return str(block_str)
